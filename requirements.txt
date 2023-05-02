@@ -1,0 +1,2 @@
+dlt[bigquery]>=0.2.5
+sqlalchemy>=1.4

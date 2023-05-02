@@ -1,0 +1,19 @@
+engine_version: 1
+pipelines:
+  sql_database:
+    is_dirty: false
+    last_commit_sha: 6dbcaf404fe4d9be29181ef645ab3c3b363f4c4d
+    last_commit_timestamp: '2023-04-25T22:25:02+02:00'
+    files:
+      sql_database/util.py:
+        commit_sha: 6dbcaf404fe4d9be29181ef645ab3c3b363f4c4d
+        git_sha: b032d8eef746b5f32e793da9c84f46b0583e7f9d
+        sha3_256: e7e9605ad8a81a5085e0a512e9f4983fdd5234044f32f4cc473d5719126da96b
+      sql_database/__init__.py:
+        commit_sha: 6dbcaf404fe4d9be29181ef645ab3c3b363f4c4d
+        git_sha: 451512719fa3f326c27fc5fb28961252aae2e70c
+        sha3_256: 81aa912ecae405255ee08e89099a90ff7d95f44b1f4fdfc4696dfbe7867c6f88
+      sql_database/sql_database.py:
+        commit_sha: 6dbcaf404fe4d9be29181ef645ab3c3b363f4c4d
+        git_sha: 216e738821f03ccd0ce3b43d19f5ab60e5e9d6ee
+        sha3_256: 84de59e0eacdd6d1612b53dbd78443d27233f44e89b368ad9e20bfa2d677d009
