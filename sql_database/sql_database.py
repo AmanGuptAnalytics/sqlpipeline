@@ -5,7 +5,7 @@ from dlt.extract.source import DltResource
 from dlt.common.configuration.specs.base_configuration import BaseConfiguration, configspec
 from dlt.common.configuration.specs import ConnectionStringCredentials
 from dlt.common.schema.typing import TWriteDisposition
-from sqlalchemy import MetaData, Table
+from sqlalchemy import MetaData, Table, create_engine
 from sqlalchemy.engine import Engine
 
 from .util import table_rows, engine_from_credentials, get_primary_key
@@ -16,14 +16,14 @@ class SqlTableConfiguration(BaseConfiguration):
     incremental: Optional[dlt.sources.incremental] = None  # type: ignore[type-arg]
 
 
-@dlt.resource
+@dlt.resource(primary_key="id", write_disposition = "merge")
 def sql_table(
-    credentials: Union[ConnectionStringCredentials, Engine, str] = dlt.secrets.value,
+
     table: str = dlt.config.value,
     schema: Optional[str] = dlt.config.value,
     metadata: Optional[MetaData] = None,
     incremental: Optional[dlt.sources.incremental[Any]] = None,
-    write_disposition: TWriteDisposition = 'append'
+    write_disposition: TWriteDisposition = 'merge',
 ) -> DltResource:
     """A dlt resource which loads data from an SQL database table using SQLAlchemy.
 
@@ -34,7 +34,12 @@ def sql_table(
     :param incremental: Option to enable incremental loading for the table. E.g. `incremental=dlt.source.incremental('updated_at', pendulum.parse('2022-01-01T00:00:00Z'))`
     :param write_disposition: Write disposition of the resource
     """
-
+    #print(f"these are the creds: {db_url_rescourse}")
+    credentials1 = ConnectionStringCredentials()
+    #db_url=dlt.secrets.value
+    credentials1.parse_native_representation(db_url_rescourse)
+    credentials1.__is_resolved__ = True
+    credentials: str =  credentials1
     engine = engine_from_credentials(credentials)
     engine.execution_options(stream_results=True)
     metadata = metadata or MetaData(schema=schema)
@@ -48,7 +53,7 @@ def sql_table(
 
 @dlt.source
 def sql_database(
-    credentials: Union[ConnectionStringCredentials, Engine, str] = dlt.secrets.value,
+    db_url: str = dlt.secrets.value,
     schema: Optional[str] = dlt.config.value,
     metadata: Optional[MetaData] = None,
     table_names: Optional[List[str]] = dlt.config.value,
@@ -63,6 +68,15 @@ def sql_database(
 
     :return: A list of dlt resources for each table to be loaded
     """
+    
+    #print(db_url)
+    global db_url_rescourse # Making db_url_resource a global variable 
+    db_url_rescourse = db_url
+    credentials1 = ConnectionStringCredentials()
+    #db_url=dlt.secrets.value
+    credentials1.parse_native_representation(db_url)
+    credentials1.__is_resolved__ = True
+    credentials: str =  credentials1
     engine = engine_from_credentials(credentials)
     engine.execution_options(stream_results=True)
     metadata = metadata or MetaData(schema=schema)
